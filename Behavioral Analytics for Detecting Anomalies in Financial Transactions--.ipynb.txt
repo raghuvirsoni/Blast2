@@ -1,0 +1,42 @@
+import pandas as pd
+from sklearn.ensemble import IsolationForest
+from sklearn.preprocessing import StandardScaler
+user_id = input("Enter user_id: ")
+while True:
+    try:
+        amount = input("Enter transaction amount: ")
+        break
+    except ValueError:
+        print("Invalid input. Please enter a valid number for amount.")
+user_data = pd.DataFrame({'user_id': [user_id], 'amount': [amount], 'timestamp': [timestamp]})
+print(user_data)
+data = {'user_id',
+        'amount',
+        'timestamp'}
+
+existing_data = pd.DataFrame(data)
+combined_data = pd.concat([user_data])
+data_numeric = combined_data.select_dtypes(include=['float64', 'int64'])
+data_numeric.fillna(0, inplace=True)
+print("data_numeric shape:", data_numeric.shape)
+print("data_numeric columns:", data_numeric.columns)
+if data_numeric.isnull().sum().sum() > 0:
+    print("Error: Missing values present in data_numeric. Please handle missing values appropriately.")
+else:
+    scaler = StandardScaler()
+    if data_numeric.shape[1] > 0:
+        data_scaled = scaler.fit_transform(data_numeric)
+        # Continue with the rest of your code...
+    else:
+        print("Error: No numerical columns found in data_numeric.")
+
+
+user_prediction = data_scaled[-1].reshape(1, -1)
+user_prediction[user_prediction == 1] = 0
+user_prediction[user_prediction == -1] = 1
+if user_prediction[0] == 0:
+    print("The transaction is normal.")
+else:
+    print("Warning: The transaction is potentially anomalous.")
+
+
